@@ -1,92 +1,121 @@
-import React, { useState,useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import "./Dealers.css";
 import "../assets/style.css";
-import positive_icon from "../assets/positive.png"
-import neutral_icon from "../assets/neutral.png"
-import negative_icon from "../assets/negative.png"
-import review_icon from "../assets/reviewbutton.png"
 import Header from '../Header/Header';
+import review_icon from "../assets/reviewicon.png"
 
-const Dealer = () => {
+const Dealers = () => {
+  const [dealersList, setDealersList] = useState([]);
+  const [states, setStates] = useState([]); // Correct state variable name
+  const [error, setError] = useState(null); // State to hold any fetch errors
 
+  // Use the environment variable for the backend URL (CRUCIAL)
+  const backend_url = process.env.REACT_APP_BACKEND_URL;
 
-  const [dealer, setDealer] = useState({});
-  const [reviews, setReviews] = useState([]);
-  const [unreviewed, setUnreviewed] = useState(false);
-  const [postReview, setPostReview] = useState(<></>)
+  // Single function to fetch dealers, handles both all and by state
+  const fetchDealers = async (state_param = "") => { // Default to empty string for fetching all
+    setError(null); // Clear previous errors
+    let url; // <--- THIS VARIABLE IS DECLARED *LOCALLY* EACH TIME THE FUNCTION RUNS
 
-  let curr_url = window.location.href;
-  let root_url = curr_url.substring(0,curr_url.indexOf("dealer"));
-  let params = useParams();
-  let id =params.id;
-  let dealer_url = root_url+`djangoapp/dealer/${id}`;
-  let reviews_url = root_url+`djangoapp/reviews/dealer/${id}`;
-  let post_review = root_url+`postreview/${id}`;
+    // Construct the URL based on whether a specific state is requested or "All"
+    if (state_param && state_param !== "All") {
+      url = `${backend_url}/djangoapp/get_dealers/${state_param}`;
+      console.log("Fetching filtered dealers URL:", url); // Debugging
+    } else {
+      url = `${backend_url}/djangoapp/get_dealers`; // Fetch all dealers
+      console.log("Fetching all dealers URL:", url); // Debugging
+    }
+
+    try {
+      const res = await fetch(url, {
+        method: "GET"
+      });
   
-  const get_dealer = async ()=>{
-    const res = await fetch(dealer_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    
-    if(retobj.status === 200) {
-      setDealer(retobj.dealer)
-    }
-  }
-
-  const get_reviews = async ()=>{
-    const res = await fetch(reviews_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    
-    if(retobj.status === 200) {
-      if(retobj.reviews.length > 0){
-        setReviews(retobj.reviews)
-      } else {
-        setUnreviewed(true);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
+  
+      const retobj = await res.json();
+  
+      if (retobj.status === 200) {
+        let fetched_dealers = Array.from(retobj.dealers);
+        setDealersList(fetched_dealers);
+  
+        if (state_param === "" || state_param === "All") {
+          let unique_states = [...new Set(fetched_dealers.map(dealer => dealer.state))];
+          setStates(unique_states);
+        }
+      } else {
+        setError(retobj.message || "Failed to fetch dealers from the server.");
+      }
+    } catch (e) {
+      console.error("An error occurred while fetching dealers:", e);
+      setError("Could not connect to the dealership service. Please try again later.");
     }
-  }
+  };
 
-  const senti_icon = (sentiment)=>{
-    let icon = sentiment === "positive"?positive_icon:sentiment==="negative"?negative_icon:neutral_icon;
-    return icon;
-  }
+  // This function will be called by the state dropdown's onChange
+  const handleStateChange = (event) => {
+    const selectedState = event.target.value;
+    console.log("Selected state from dropdown:", selectedState); // Debugging
+    fetchDealers(selectedState); // Call the new centralized fetch function
+  };
 
   useEffect(() => {
-    get_dealer();
-    get_reviews();
-    if(sessionStorage.getItem("username")) {
-      setPostReview(<a href={post_review}><img src={review_icon} style={{width:'10%',marginLeft:'10px',marginTop:'10px'}} alt='Post Review'/></a>)
+    fetchDealers("All");
+  }, [backend_url]);
 
-      
-    }
-  },[]);  
+  let isLoggedIn = sessionStorage.getItem("username") != null;
 
-
-return(
-  <div style={{margin:"20px"}}>
+  return(
+    <div>
       <Header/>
-      <div style={{marginTop:"10px"}}>
-      <h1 style={{color:"grey"}}>{dealer.full_name}{postReview}</h1>
-      <h4  style={{color:"grey"}}>{dealer['city']},{dealer['address']}, Zip - {dealer['zip']}, {dealer['state']} </h4>
-      </div>
-      <div class="reviews_panel">
-      {reviews.length === 0 && unreviewed === false ? (
-        <text>Loading Reviews....</text>
-      ):  unreviewed === true? <div>No reviews yet! </div> :
-      reviews.map(review => (
-        <div className='review_panel'>
-          <img src={senti_icon(review.sentiment)} className="emotion_icon" alt='Sentiment'/>
-          <div className='review'>{review.review}</div>
-          <div className="reviewer">{review.name} {review.car_make} {review.car_model} {review.car_year}</div>
-        </div>
+
+      {error && <div style={{ color: 'red', textAlign: 'center', margin: '1rem' }}>{error}</div>}
+
+     <table className='table'>
+      <thead>
+        <tr>
+        <th>ID</th>
+        <th>Dealer Name</th>
+        <th>City</th>
+        <th>Address</th>
+        <th>Zip</th>
+        <th>
+        <select name="state" id="state" onChange={handleStateChange}>
+        <option value="" selected disabled hidden>State</option>
+        <option value="All">All States</option>
+        {states.map(state => (
+            <option key={state} value={state}>{state}</option>
+        ))}
+        </select>        
+
+        </th>
+        {isLoggedIn ? (
+            <th>Review Dealer</th>
+           ):<></>
+        }
+        </tr>
+      </thead>
+      <tbody>
+     {dealersList.map(dealer => (
+        <tr key={dealer.id}>
+          <td>{dealer['id']}</td>
+          <td><a href={'/dealer/'+dealer['id']}>{dealer['full_name']}</a></td>
+          <td>{dealer['city']}</td>
+          <td>{dealer['address']}</td>
+          <td>{dealer['zip']}</td>
+          <td>{dealer['state']}</td>
+          {isLoggedIn ? (
+            <td><a href={`/postreview/${dealer['id']}`}><img src={review_icon} className="review_icon" alt="Post Review"/></a></td>
+           ):<></>
+          }
+        </tr>
       ))}
-    </div>  
-  </div>
-)
+      </tbody>
+     </table>
+    </div>
+  )
 }
 
-export default Dealer
+export default Dealers;
