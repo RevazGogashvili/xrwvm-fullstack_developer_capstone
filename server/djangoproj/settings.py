@@ -29,12 +29,13 @@ SECRET_KEY =\
 DEBUG = True
 
 # MODIFIED LINES START HERE
+# Updated with the new URL from the error message
 ALLOWED_HOSTS = [
     'localhost',
-    'gogashvilire-8000.theianext-0-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai'
+    'gogashvilire-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://gogashvilire-8000.theianext-0-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai'
+    'https://gogashvilire-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
 ]
 # MODIFIED LINES END HERE
 
