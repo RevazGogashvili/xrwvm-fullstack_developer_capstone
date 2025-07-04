@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us - Best Cars</title>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /*
+          This block is the MINIMUM needed to force the layout to match your image
+          by overriding the conflicting rules in your style.css file.
+        */
+        body {
+            background-color: #f4f4f4; /* Light background to make the card visible */
+        }
+        .landscape-card {
+            width: 80%;
+            max-width: 1100px;
+            margin: 2rem auto;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden; /* Ensures content respects rounded corners */
+        }
+        .landscape-card .card-body-content {
+            padding: 2rem;
+        }
+        /* Make the image in the column responsive */
+        .landscape-card .column-image {
+            width: 100% !important; /* OVERRIDE: Forces image to fit column */
+            height: auto;
+        }
+        .landscape-card .contact-title {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 0.25rem;
+            font-size: 1.1em;
+        }
+        .landscape-card .contact-info-block {
+            margin-bottom: 1rem;
+        }
+        .landscape-card .contact-link {
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise;">
+        <div class="container-fluid">
+            <h2 style="padding-right: 5%;">Dealerships</h2>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" style="font-size: larger;" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" style="font-size: larger;" href="/about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" style="font-size: larger;" href="/contact">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Card with Landscape Orientation -->
+    <div class="card landscape-card">
+        
+        <!-- The banner div from before has been REMOVED -->
+
+        <!-- The two-column section is now the only content in the card -->
+        <div class="card-body-content">
+            <!-- Added align-items-center to vertically center the columns -->
+            <div class="row align-items-center">
+
+                <!-- 
+                  LEFT COLUMN: Now contains the contactus.png image.
+                -->
+                <div class="col-md-6">
+                    <img class="column-image" src="/static/contactus.png" alt="">
+                </div>
+
+                <!-- 
+                  RIGHT COLUMN: Contains the contact details.
+                -->
+                <div class="col-md-6">
+                    <div class="contact-info-block">
+                        <p class="contact-title">Contact Customer Service</p>
+                        <p>support@bestcars.com</p>
+                    </div>
+                    <div class="contact-info-block">
+                        <p class="contact-title">Contact our National Advertising team</p>
+                        <p>NationalSales@bestcars.com</p>
+                    </div>
+                    <div class="contact-info-block">
+                        <p class="contact-title">Contact our Public Relations team</p>
+                        <p>PR@bestcars.com</p>
+                    </div>
+                    <div class="contact-info-block">
+                        <p class="contact-title">Contact the bestcars.com offices</p>
+                        <p>312-611-1111</p>
+                    </div>
+                    <div class="contact-info-block">
+                        <p class="contact-title">Become a bestcars.com car dealer</p>
+                        <a class="contact-link" href="#">Visit growwithbestcars.com</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

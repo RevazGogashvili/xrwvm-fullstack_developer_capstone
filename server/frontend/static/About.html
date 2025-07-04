@@ -1,68 +1,94 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <!-- Link the style sheet here -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Best Cars</title>
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
-<div>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <h2 style="padding-right: 5%;">Dealerships</h2>
+      <a class="navbar-brand" href="/">Best Cars</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" style="font-size: larger;" aria-current="page" href="/">Home</a>
+            <a class="nav-link" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" style="font-size: larger;" href="/about">About Us</a>
+            <a class="nav-link active" href="/about">About Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" style="font-size: larger;" href="/contact">Contact Us</a>
+            <a class="nav-link" href="/contact">Contact Us</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  
-    <div class="card" style="width: 80%;margin: auto; margin-top:5%;">
-      <div class="banner" name="about-header">
-      <!-- Insert header information here -->
-      </div>
-      <div style="display: flex;flex-direction: row; margin:auto">
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person1</p>
-          <p>Person1 Title</p>
-          <p class="card-text">Some text that explains the person1 in about 2 short sentences</p>
-          <p>person1@example.com</p>
-        </div>
-      </div>
 
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person2</p>
-          <p>Person2 Title</p>
-          <p class="card-text">Some text that explains the person2 in about 2 short sentences</p>
-          <p>person2@example.com</p>
-        </div>
-      </div>
-
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
-        <div class="card-body">
-          <p class="title">Person3</p>
-          <p>Person3 Title</p>
-          <p class="card-text">Some text that explains the person3 in about 2 short sentences</p>
-          <p>person3@example.com</p>
-        </div>
-      </div>
-    </div>
-    </div>
-    </div>
+  <!-- Main Content -->
+  <div class="container mt-5">
     
-</div>
+    <!-- About Us Header -->
+    <div class="text-center p-5 mb-4 bg-light rounded-3">
+      <h1 class="display-4">About Our Dealership</h1>
+      <p class="lead">Welcome to Best Cars, your trusted partner for premium new and pre-owned vehicles across North America. Our mission is to provide a transparent, seamless, and enjoyable car-buying experience. We believe in quality, value, and building lasting relationships with our customers.</p>
+    </div>
 
+    <!-- Team Section -->
+    <div class="row text-center">
+      <div class="col-12 mb-5">
+        <h2>Meet Our Leadership Team</h2>
+        <hr>
+      </div>
+      
+      <!-- Team Member 1: Jane Doe -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="/static/Jane_doe.png" alt="Portrait of Jane Doe">
+          <div class="card-body">
+            <h5 class="card-title">Jane Doe</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Founder & CEO</h6>
+            <p class="card-text">Jane founded Best Cars with a passion for connecting people with their dream cars. Her vision for customer-centric service is the driving force behind our success.</p>
+            <a href="mailto:jane.doe@bestcars.com" class="card-link">jane.doe@bestcars.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 2: John Smith -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="/static/John_smith.jpg" alt="Portrait of John Smith">
+          <div class="card-body">
+            <h5 class="card-title">John Smith</h5>
+            <h6 class="card-subtitle mb-2 text-muted">National Sales Director</h6>
+            <p class="card-text">With over 20 years of experience in the automotive industry, John leads our sales teams to ensure you get the best value and a hassle-free purchasing process.</p>
+            <a href="mailto:john.smith@bestcars.com" class="card-link">john.smith@bestcars.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 3: Maria Garcia -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="/static/Maria_garcia.jpg" alt="Portrait of Maria Garcia">
+          <div class="card-body">
+            <h5 class="card-title">Maria Garcia</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Head of Service Operations</h6>
+            <p class="card-text">Maria's commitment to excellence ensures that every vehicle we sell is in top condition. She leads our team of certified technicians with precision and expertise.</p>
+            <a href="mailto:maria.garcia@bestcars.com" class="card-link">maria.garcia@bestcars.com</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
 </html>
