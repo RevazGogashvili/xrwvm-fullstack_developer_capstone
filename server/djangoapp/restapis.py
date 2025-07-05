@@ -22,66 +22,46 @@ sentiment_analyzer_url = os.getenv(
     'sentiment_analyzer_url',
     default="http://localhost:5050/")
 
+# --- get_request function ---
 def get_request(endpoint, **kwargs):
-    """
-    Makes a GET request to the specified external API endpoint.
-    :param endpoint: The API endpoint (e.g., "/cars", "/fetchDealers").
-    :param kwargs: Optional query parameters.
-    """
     params = ""
-    if kwargs:
-        # Build query parameters string (e.g., "key1=value1&key2=value2")
-        for key, value in kwargs.items():
-            params += f"{key}={value}&"
-    
-    request_url = backend_url + endpoint
-    if params:
-        # Remove trailing '&' if any
-        request_url = request_url + "?" + params.rstrip('&')
+    if(kwargs):
+        for key,value in kwargs.items():
+            params=params+key+"="+value+"&"
 
-    # Debugging print to show the full URL being requested from the external API
-    print(f"DEBUG (restapis.py - get_request): Attempting GET from external API: '{request_url}'")
-    
+    request_url = backend_url+endpoint+"?"+params
+
+    print("GET from {} ".format(request_url))
     try:
         # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
-        response.raise_for_status() # Raise an HTTPError for bad responses (4xx or 5xx)
         return response.json()
-    except requests.exceptions.RequestException as e:
-        # --- THIS IS THE LINE YOU ASKED FOR ---
-        print(f"ERROR (restapis.py - get_request): Network exception occurred for '{request_url}': {e}")
-        # --- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ---
-        return None # Return None on error
+    except:
+        # If any error occurs
+        print("Network exception occurred")
+# --- End of get_request function ---
 
+
+# --- analyze_review_sentiments function ---
 def analyze_review_sentiments(text):
-    """
-    Calls the sentiment analyzer service to get sentiment for a review text.
-    """
-    # Ensure the text is properly URL-encoded if it contains special characters
-    # For simplicity, assuming text is clean or sentiment_analyzer_url handles it.
-    request_url = sentiment_analyzer_url + "analyze/" + text
-    print(f"DEBUG (restapis.py - analyze_review_sentiments): GET from sentiment analyzer: '{request_url}'")
+    request_url = sentiment_analyzer_url+"analyze/"+text
     try:
+        # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
-        response.raise_for_status()
         return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"ERROR (restapis.py - analyze_review_sentiments): Network exception occurred for '{request_url}': {e}")
-        return {"sentiment": "unknown"} # Return a default object on failure
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
+        print("Network exception occurred")
+# --- End of analyze_review_sentiments function ---
 
+
+# --- post_review function replaced exactly as requested ---
 def post_review(data_dict):
-    """
-    Posts a new review to the external API.
-    :param data_dict: Dictionary containing review data.
-    """
-    request_url = backend_url + "/insert_review"
-    print(f"DEBUG (restapis.py - post_review): Attempting POST to external API: '{request_url}' with data: {data_dict}")
+    request_url = backend_url+"/insert_review"
     try:
-        response = requests.post(request_url, json=data_dict)
-        response.raise_for_status()
-        print(f"DEBUG (restapis.py - post_review): Response from external API: {response.json()}")
+        response = requests.post(request_url,json=data_dict)
+        print(response.json())
         return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"ERROR (restapis.py - post_review): Network exception occurred for '{request_url}': {e}")
-        # Return a structured error response that can be handled by the caller
-        return {"status": "error", "message": f"Network exception: {e}"}
+    except:
+        print("Network exception occurred")
+# --- End of replaced function ---

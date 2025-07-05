@@ -9,25 +9,28 @@ from . import views # This import is correct for djangoapp/views.py
 app_name = 'djangoapp'
 urlpatterns = [
     # Path for fetching car models
-    path('get_cars', views.get_cars, name='get_cars'), # This correctly calls views.get_cars
+    path('get_cars', views.get_cars, name='get_cars'),
 
-    # Path for get_dealers
-    path('get_dealers', views.get_dealers, name='get_dealers'),
-    path('get_dealers/<str:state>', views.get_dealers, name='get_dealers_by_state'),
+    # Paths for getting all dealers and dealers by state
+    path('get_dealers', views.get_dealerships, name='get_dealers'),
+    path('get_dealers/<str:state>', views.get_dealerships, name='get_dealers_by_state'),
 
-    # path for dealer reviews view
-    path(route='reviews/dealer/<int:dealer_id>', view=views.get_dealer_reviews, name='dealer_reviews'),
+    # Path for getting a specific dealer's details (ADDED/CORRECTED)
+    path(route='dealer/<int:dealer_id>', view=views.get_dealer_details, name='dealer_details'),
 
-    # path for add a review view
+    # Path for dealer reviews view
+    path(route='reviews/dealer/<int:dealer_id>', view=views.get_dealer_reviews, name='dealer_details'),
+
+    # Path for add a review view
     path(route='add_review', view=views.add_review, name='add_review'),
 
-    # path for registration
+    # Path for registration
     path(route='register', view=views.registration, name='register'),
 
-    # path for login
+    # Path for login
     path(route='login', view=views.login_user, name='login'),
 
-    # path for logout (commonly added with login/register)
+    # Path for logout (commonly added with login/register)
     path(route='logout', view=views.logout_request, name='logout'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
