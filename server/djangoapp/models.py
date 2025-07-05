@@ -36,9 +36,11 @@ class CarModel(models.Model):
         ('WAGON', 'Wagon'),
         ('COUPE', 'Coupe'),
         ('TRUCK', 'Truck'),
+        ('CONVERTIBLE', 'Convertible'), # <-- ADDED THIS LINE
         # Add more choices as required
     ]
-    type = models.CharField(max_length=10, choices=CAR_TYPES, default='SUV')
+    # Increased max_length from 10 to 20 to accommodate "CONVERTIBLE"
+    type = models.CharField(max_length=20, choices=CAR_TYPES, default='SUV') # <-- MODIFIED THIS LINE
 
     # Year field with validators to ensure it's within a reasonable range
     year = models.IntegerField(default=2023,

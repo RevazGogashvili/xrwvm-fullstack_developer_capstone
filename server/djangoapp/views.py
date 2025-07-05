@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 import json
 from django.views.decorators.csrf import csrf_exempt
-# from datetime import datetime # Only import if actually used
+from .models import CarMake, CarModel # <--- IMPORT ADDED HERE
 
 # Import all restapis functions
 from .restapis import get_request, analyze_review_sentiments, post_review
@@ -101,7 +101,7 @@ def login_user(request):
         else:
             logger.warning(f"Authentication failed for user: {username}") # Added for debugging
             # Return HTTP 401 for unauthorized when authentication fails
-            return JsonResponse({"status": 401, "message": "Invalid credentials"}, status=401) # <-- **CRITICAL FIX HERE**
+            return JsonResponse({"status": 401, "message": "Invalid credentials"}, status=401)
     except json.JSONDecodeError as e:
         logger.error(f"Invalid JSON in login request: {e}", exc_info=True) # Added for debugging
         return JsonResponse({"status": 400, "message": "Invalid JSON format in request body."}, status=400)
@@ -128,49 +128,32 @@ def registration(request):
 
     if User.objects.filter(username=username).exists():
         # Return HTTP 409 for conflict (username already exists)
-        return JsonResponse({"status": 409, "message": "Username already exists"}, status=409) # Added status=409
+        return JsonResponse({"status": 409, "message": "Username already exists"}, status=409)
     
     try:
         user = User.objects.create_user(username=username, password=password, 
                                         first_name=first_name, last_name=last_name, email=email)
         login(request, user) # Optionally log in the user immediately after registration
         # Return HTTP 200 for success
-        return JsonResponse({"status": 200, "message": "User successfully registered and logged in"}, status=200) # Added status=200
+        return JsonResponse({"status": 200, "message": "User successfully registered and logged in"}, status=200)
     except Exception as e:
         logger.error(f"Error during registration: {e}")
         # Return HTTP 500 for server error
-        return JsonResponse({"status": 500, "message": "Error during registration."}, status=500) # Added status=500
+        return JsonResponse({"status": 500, "message": "Error during registration."}, status=500)
 
-# --- NEW FUNCTION ADDED HERE ---
+# --- THE get_cars FUNCTION HAS BEEN REPLACED WITH YOUR NEW CODE ---
 def get_cars(request):
-    """
-    Fetches car models from the external API.
-    """
-    logger.debug("get_cars view called.")
-    try:
-        # Assuming your external API has an endpoint like /cars or /fetchCars
-        # Adjust this endpoint to what your external API actually expects for car data
-        endpoint = "/cars" # <-- VERIFY THIS EXTERNAL API ENDPOINT!
-        cars = get_request(endpoint) # This calls your restapis.py function
+    count = CarMake.objects.filter().count()
+    print(count)
+    if(count == 0):
+        initiate()
+    car_models = CarModel.objects.select_related('car_make')
+    cars = []
+    for car_model in car_models:
+        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
+    return JsonResponse({"CarModels":cars})
+# --- END REPLACED FUNCTION ---
 
-        if cars:
-            # Your frontend expects the key 'CarModels' in the response JSON
-            # Ensure the structure matches what 'get_request' returns from the external API
-            # For example, if external API returns a list of car objects:
-            # [{"id":1, "CarMake": "Toyota", "CarModel": "Camry"}, ...]
-            # Then you'll need to wrap it if your frontend specifically wants {"CarModels": [...]}.
-            # If the external API already gives {"CarModels": [...]}, then just return it.
-            
-            # Assuming 'cars' is already a list of car objects like:
-            # [{"id": 1, "CarMake": "Toyota", "CarModel": "Camry", ...}, ...]
-            # And you want to return {"CarModels": [ ... ]}
-            return JsonResponse({"status": 200, "CarModels": cars}, status=200)
-        else:
-            logger.warning("No car models found from external API.")
-            return JsonResponse({"status": 404, "message": "No car models found."}, status=404)
-    except Exception as e:
-        logger.error(f"Error fetching car models: {e}", exc_info=True)
-        return JsonResponse({"status": 500, "message": "Failed to fetch car models from external API."}, status=500)
 
 # --- Other potential views like 'get_dealers_by_id' would also go here ---
 # def get_dealer_details(request, dealer_id):
