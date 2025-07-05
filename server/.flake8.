@@ -4,13 +4,5 @@ exclude =
     */migrations/*,
     __init__.py,
     djangoenv
-
-# Ignore these specific error codes across all other files
-# E501: Line too long
-# E231: Missing whitespace after ',' or ':'
-# E302: Expected 2 blank lines
-# W292: No newline at end of file
-# F401: Imported but unused
-# E261: At least two spaces before inline comment
-# E722: Do not use bare 'except'
-ignore = E501, E231, E302, W292, F401, E261, E722
+# Ignore the "line too long" error because it's tedious to fix manually
+ignore = E501
