@@ -25,7 +25,8 @@ ALLOWED_HOSTS = [
 # For API requests, you usually either use @csrf_exempt or send the token.
 # Keep it if you're explicitly trusting the origin for non-API forms.
 CSRF_TRUSTED_ORIGINS = [
-    'https://gogashvilire-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
+    "https://gogashvilire-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai",
+    "http://localhost:3000",
 ]
 
 # If you're not explicitly using Django REST Framework, this might not be needed.

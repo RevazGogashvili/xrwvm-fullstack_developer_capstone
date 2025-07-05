@@ -1,88 +1,124 @@
-table{
-    margin:5px;
-    padding:10px;
-    border: grey solid 1px;
-    width:100%
-  }
-  
-  td{
-    padding:10px;
-    align-self: center;
-    border:solid grey .5px;
-    text-align: center;
-    font-size: large;
-  }
-  
-  .review_panel{
-    display: flex;
-    flex-direction: column;
-    border: solid grey;
-    position: relative;
-    height:7cm;
-    width:6cm;
-    overflow-y: scroll;
-    padding:.3cm;
-    padding-top: 0%;
-    border-radius:10px; 
-    box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.5);
-    margin-bottom: .5cm;
-    justify-content: space-between;
-  }
-
-  .postreview{
-    margin:20px;
-    padding:10px;
-    font-size: larger;
-  }
-
-  th{
-    padding:5px;
-    align-self: center;
-    text-align: center;
-    font-size: large;
-    margin-bottom: 1cm;
-    vertical-align: middle;
-    color: black;
-  }
-
-  .reviews_panel {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    column-gap: 1cm;
-    overflow-wrap: normal;
-    margin-top: 1cm;
-    align-items: flex-start;
-  }
-
-  .reviewer {
-    margin: 10px; /* Optional margin for spacing */
-    font-style: italic;
-    color: gray;
-    font-size: small;
+/* --- Styles for the main Dealers table (Dealers.jsx) --- */
+table {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: calc(100% - 40px); /* Adjust width to account for margin */
+  border-collapse: collapse; /* Makes borders look cleaner */
 }
 
+th, td {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: large;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #f2f2f2; /* Light grey header for the table */
+  color: black;
+  font-weight: bold;
+}
+
+/* --- Styles for the Dealer Detail page (Dealer.jsx) --- */
+
+/* Main container for all reviews */
+.reviews_panel {
+  margin: 20px;
+  display: flex;
+  flex-direction: column; /* Stack review cards vertically */
+  gap: 20px; /* Adds space between review cards */
+  align-items: flex-start; /* Align cards to the left */
+}
+
+/* The individual review card */
+.review_card {
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: hidden; /* Keeps content inside the rounded corners */
+  width: 100%;
+  max-width: 700px; /* Set a max-width for readability */
+  background-color: #fff; /* White background for the card */
+}
+
+/* The header section of the review card (name, car model, year) */
+.card_header {
+  background-color: lightcyan; /* As seen in your sample */
+  padding: 10px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* The main body of the review card (the review text and sentiment icon) */
+.card_body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  gap: 15px; /* Space between the review text and the icon */
+}
+
+/* Style for the reviewer's name */
+.reviewer {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #333;
+}
+
+/* Style for the car details and year */
+.review_detail {
+  color: #555;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+/* Style for the review text itself */
 .review {
-  margin-top: 1.5cm;
+  color: #444;
+  line-height: 1.6; /* More readable line spacing */
+  font-size: 1em;
 }
 
-.emotion_icon {
-  align-self: center;
-  position:fixed;
-    width:40px;
-    height:40px;
-    background-color:#0C9;
-    color:#FFF;
-    border-radius:50px;
-    text-align:center;
-    box-shadow: 2px 2px 3px #999;  
+/* Style for the sentiment filter radio buttons */
+.filters {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adds space between filter elements */
 }
 
+.filters label {
+  margin-right: 15px; /* Adds space after each radio button label */
+}
+
+/* --- Styles for the Post Review page (PostReview.jsx) --- */
+.postreview {
+  margin: 20px;
+  padding: 10px;
+  font-size: larger;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.postreview:hover {
+  background-color: #0056b3;
+}
+
+/* --- Icon Styles --- */
 .review_icon {
-  width:40px;
+  width: 40px;
+  cursor: pointer;
 }
 
 .review_icon:hover {
   transform: scale(1.1);
-  border: solid lightgray;
+}
+
+/* Style for the new sentiment icon image */
+.sentiment-icon {
+  width: 30px;  /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
 }

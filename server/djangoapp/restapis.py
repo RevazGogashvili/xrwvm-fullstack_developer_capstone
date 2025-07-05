@@ -8,10 +8,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # This 'backend_url' should be the base URL of your *EXTERNAL MICROSERVICE*
-# (e.g., your IBM Cloud backend that serves dealers, cars, and accepts reviews)
-# It is NOT your Django server's URL.
-# Ensure there is NO SPACE after the '=' in your .env file
-# e.g., backend_url=https://gogashvilire-3030.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai
 backend_url = os.getenv('backend_url', default="http://localhost:3030")
 
 # Debugging print to confirm the loaded backend_url
@@ -22,7 +18,7 @@ sentiment_analyzer_url = os.getenv(
     'sentiment_analyzer_url',
     default="http://localhost:5050/")
 
-# --- get_request function ---
+# get_request function
 def get_request(endpoint, **kwargs):
     params = ""
     if(kwargs):
@@ -39,10 +35,10 @@ def get_request(endpoint, **kwargs):
     except:
         # If any error occurs
         print("Network exception occurred")
-# --- End of get_request function ---
+        return None # Explicitly return None on failure
 
 
-# --- analyze_review_sentiments function ---
+# --- analyze_review_sentiments function with the fix ---
 def analyze_review_sentiments(text):
     request_url = sentiment_analyzer_url+"analyze/"+text
     try:
@@ -50,12 +46,15 @@ def analyze_review_sentiments(text):
         response = requests.get(request_url)
         return response.json()
     except Exception as err:
-        print(f"Unexpected {err=}, {type(err)=}")
-        print("Network exception occurred")
-# --- End of analyze_review_sentiments function ---
+        print(f"Unexpected error in analyze_review_sentiments: {err}")
+        # --- THIS IS THE FIX ---
+        # Instead of returning None, return a default dictionary.
+        # This prevents the TypeError in the calling view.
+        return {"sentiment": "unknown"}
+# --- End of corrected function ---
 
 
-# --- post_review function replaced exactly as requested ---
+# post_review function
 def post_review(data_dict):
     request_url = backend_url+"/insert_review"
     try:
@@ -64,4 +63,3 @@ def post_review(data_dict):
         return response.json()
     except:
         print("Network exception occurred")
-# --- End of replaced function ---
