@@ -1,0 +1,64 @@
+name: 'Lint Code Base'
+
+# This action runs on pushes or pull requests to the main/master branches
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  # This job lints the Python/Django code
+  lint_python:
+    name: Lint Python Files
+    runs-on: ubuntu-latest
+    steps:
+    # Step 1: Check out the repository code so the workflow can access it
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    
+    # Step 2: Set up the Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        # Using Python 3.11 to match your project's environment
+        python-version: 3.11
+        
+    # Step 3: Install the linter tool
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+        
+    # Step 4: Run the linter on your Django code
+    # We target the 'server/' directory specifically to avoid linting the virtual environment
+    - name: Run Flake8 Linter
+      run: |
+        flake8 ./server
+        echo "Python linting completed successfully."
+
+  # This job lints the JavaScript/React code
+  lint_js:
+      name: Lint JavaScript Files
+      runs-on: ubuntu-latest
+      steps:
+      # Step 1: Check out the repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
+      # Step 2: Set up the Node.js environment
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16 # Using a more modern, stable version of Node.js
+          
+      # Step 3: Install the linter tool
+      - name: Install dependencies
+        run: npm install jshint --global
+        
+      # Step 4: Run the linter on your React code
+      # CORRECTED: The path now points to your frontend source code
+      - name: Run JSHint Linter
+        run: |
+          jshint ./frontend/src
+          echo "JavaScript linting completed successfully."
